@@ -1,0 +1,16 @@
+{
+  "name": "bypass-tool-pro-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"pnpm --filter backend dev\" \"pnpm --filter frontend dev\"",
+    "build": "pnpm --filter backend build && pnpm --filter frontend build",
+    "deploy:frontend": "pnpm --filter frontend build && firebase deploy --only hosting",
+    "deploy:backend": "cd packages/backend/firebase-functions && npm install && npm run build && firebase deploy --only functions",
+    "deploy": "pnpm build && pnpm deploy:backend && pnpm deploy:frontend"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "typescript": "^5.5.3"
+  }
+}

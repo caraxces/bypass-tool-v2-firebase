@@ -1,0 +1,20 @@
+{
+  "hosting": {
+    "public": "packages/frontend/out",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  },
+  "functions": {
+    "source": "packages/backend/firebase-functions",
+    "runtime": "nodejs18"
+  }
+}
