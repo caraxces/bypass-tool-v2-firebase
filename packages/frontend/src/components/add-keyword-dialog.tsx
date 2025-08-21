@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -28,33 +27,35 @@ import { Input } from '@/components/ui/input';
 import { apiClient } from '@/lib/api-client';
 
 const formSchema = z.object({
-  name: z.string().min(2, {
-    message: 'Tên dự án phải có ít nhất 2 ký tự.',
+  keyword: z.string().min(1, {
+    message: 'Từ khóa không được để trống.',
   }),
-  domain: z.string().url({
-    message: 'Vui lòng nhập URL hợp lệ.',
+  projectId: z.string().min(1, {
+    message: 'Vui lòng chọn dự án.',
   }),
-  description: z.string().optional(),
+  status: z.enum(['pending', 'checked', 'failed']).default('pending'),
+  notes: z.string().optional(),
 });
 
-interface AddProjectDialogProps {
-  onProjectCreated?: (project: any) => void;
+interface AddKeywordDialogProps {
+  onKeywordCreated?: (keyword: any) => void;
   onRefresh?: () => void;
   trigger?: React.ReactNode;
+  projects?: any[];
 }
 
-export function AddProjectDialog({ onProjectCreated, onRefresh, trigger }: AddProjectDialogProps) {
+export function AddKeywordDialog({ onKeywordCreated, onRefresh, trigger, projects = [] }: AddKeywordDialogProps) {
   const [open, setOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
-  const router = useRouter();
   
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: '',
-      domain: '',
-      description: '',
+      keyword: '',
+      projectId: '',
+      status: 'pending',
+      notes: '',
     },
   });
 
@@ -63,40 +64,33 @@ export function AddProjectDialog({ onProjectCreated, onRefresh, trigger }: AddPr
       setIsSubmitting(true);
       setError('');
       
-      console.log('Đang tạo dự án:', values);
+      console.log('Đang thêm từ khóa:', values);
       
-      const newProject = await apiClient.createProject({
-        name: values.name,
-        domain: values.domain,
-        description: values.description || '',
+      const newKeyword = await apiClient.createKeyword({
+        keyword: values.keyword,
+        projectId: values.projectId,
+        status: values.status,
+        notes: values.notes || '',
       });
       
-      console.log('Dự án đã được tạo:', newProject);
+      console.log('Từ khóa đã được thêm:', newKeyword);
       
       form.reset();
       setOpen(false);
       
-      // Call callback if provided
-      if (onProjectCreated) {
-        onProjectCreated(newProject);
+      if (onKeywordCreated) {
+        onKeywordCreated(newKeyword);
       }
       
-      // Call refresh callback if provided
       if (onRefresh) {
         onRefresh();
       }
       
-      // Fallback to router refresh
-      if (!onProjectCreated && !onRefresh) {
-        router.refresh();
-      }
-      
-      // Show success message
-      alert('Dự án đã được tạo thành công!');
+      alert('Từ khóa đã được thêm thành công!');
       
     } catch (error: any) {
-      console.error('Lỗi khi tạo dự án:', error);
-      setError(error.message || 'Có lỗi xảy ra khi tạo dự án. Vui lòng thử lại.');
+      console.error('Lỗi khi thêm từ khóa:', error);
+      setError(error.message || 'Có lỗi xảy ra khi thêm từ khóa. Vui lòng thử lại.');
     } finally {
       setIsSubmitting(false);
     }
@@ -104,7 +98,6 @@ export function AddProjectDialog({ onProjectCreated, onRefresh, trigger }: AddPr
 
   const handleOpenChange = (newOpen: boolean) => {
     if (!newOpen) {
-      // Reset form when closing
       form.reset();
       setError('');
     }
@@ -115,21 +108,21 @@ export function AddProjectDialog({ onProjectCreated, onRefresh, trigger }: AddPr
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         {trigger || (
-                  <Button className="bg-blue-600 hover:bg-blue-700">
+                  <Button className="bg-green-600 hover:bg-green-700">
           <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
           </svg>
-          Thêm Dự Án
+          Thêm Từ Khóa
         </Button>
         )}
       </DialogTrigger>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
           <DialogTitle className="text-xl font-bold text-gray-900">
-            Thêm Dự Án Mới
+            Thêm Từ Khóa Mới
           </DialogTitle>
           <DialogDescription className="text-gray-600">
-            Nhập thông tin cho dự án mới của bạn. Click lưu khi hoàn thành.
+            Nhập thông tin từ khóa mới. Click lưu khi hoàn thành.
           </DialogDescription>
         </DialogHeader>
         
@@ -137,15 +130,15 @@ export function AddProjectDialog({ onProjectCreated, onRefresh, trigger }: AddPr
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FormField
               control={form.control}
-              name="name"
+              name="keyword"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-sm font-medium text-gray-700">
-                    Tên Dự Án *
+                    Từ Khóa *
                   </FormLabel>
                   <FormControl>
                     <Input 
-                      placeholder="Ví dụ: Website Ru9.vn" 
+                      placeholder="Ví dụ: SEO tools" 
                       {...field} 
                       className="w-full"
                     />
@@ -157,18 +150,24 @@ export function AddProjectDialog({ onProjectCreated, onRefresh, trigger }: AddPr
             
             <FormField
               control={form.control}
-              name="domain"
+              name="projectId"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-sm font-medium text-gray-700">
-                    Domain/URL *
+                    Dự Án *
                   </FormLabel>
                   <FormControl>
-                    <Input 
-                      placeholder="https://ru9.vn" 
-                      {...field} 
-                      className="w-full"
-                    />
+                    <select
+                      {...field}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    >
+                      <option value="">Chọn dự án...</option>
+                      {projects.map((project) => (
+                        <option key={project.id} value={project.id}>
+                          {project.name}
+                        </option>
+                      ))}
+                    </select>
                   </FormControl>
                   <FormMessage className="text-red-500 text-sm" />
                 </FormItem>
@@ -177,17 +176,40 @@ export function AddProjectDialog({ onProjectCreated, onRefresh, trigger }: AddPr
             
             <FormField
               control={form.control}
-              name="description"
+              name="status"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-sm font-medium text-gray-700">
-                    Mô Tả (Tùy chọn)
+                    Trạng Thái
+                  </FormLabel>
+                  <FormControl>
+                    <select
+                      {...field}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    >
+                      <option value="pending">Chờ kiểm tra</option>
+                      <option value="checked">Đã kiểm tra</option>
+                      <option value="failed">Thất bại</option>
+                    </select>
+                  </FormControl>
+                  <FormMessage className="text-red-500 text-sm" />
+                </FormItem>
+              )}
+            />
+            
+            <FormField
+              control={form.control}
+              name="notes"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-sm font-medium text-gray-700">
+                    Ghi Chú (Tùy chọn)
                   </FormLabel>
                   <FormControl>
                     <textarea
-                      placeholder="Mô tả ngắn về dự án..."
+                      placeholder="Ghi chú về từ khóa..."
                       {...field}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                       rows={3}
                     />
                   </FormControl>
@@ -214,9 +236,9 @@ export function AddProjectDialog({ onProjectCreated, onRefresh, trigger }: AddPr
               <Button 
                 type="submit" 
                 disabled={isSubmitting}
-                className="bg-blue-600 hover:bg-blue-700"
+                className="bg-green-600 hover:bg-green-700"
               >
-                {isSubmitting ? '⏳ Đang tạo...' : '💾 Lưu Dự Án'}
+                {isSubmitting ? '⏳ Đang thêm...' : '💾 Thêm Từ Khóa'}
               </Button>
             </DialogFooter>
           </form>

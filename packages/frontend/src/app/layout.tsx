@@ -37,7 +37,7 @@ export default function RootLayout({
                 Built with ❤️ using Next.js, Tailwind CSS, and Fastify
               </p>
               <p className="mt-1 text-xs">
-                © 2024 Bypass Tool Pro. All rights reserved.
+                ©TrucMT 2025 Bypass Tool Pro. All rights reserved.
               </p>
             </div>
           </footer>

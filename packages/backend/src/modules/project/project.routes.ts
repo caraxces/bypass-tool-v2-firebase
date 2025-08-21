@@ -6,4 +6,4 @@ async function projectRoutes(server: FastifyInstance) {
   server.get('/', getProjectsHandler);
 }
 
-module.exports = projectRoutes;
+export default projectRoutes;
