@@ -1,7 +1,7 @@
 {
   "name": "bypass-tool-pro-functions",
   "version": "1.0.0",
-  "description": "Firebase Functions for Bypass Tool Pro",
+  "description": "Firebase Functions for Bypass Tool Pro - SEO Ranking Tool",
   "main": "lib/index.js",
   "scripts": {
     "build": "tsc",
@@ -9,7 +9,10 @@
     "shell": "npm run build && firebase functions:shell",
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions",
-    "logs": "firebase functions:log"
+    "logs": "firebase functions:log",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push",
+    "db:migrate": "prisma migrate dev"
   },
   "engines": {
     "node": "18"
@@ -21,7 +24,10 @@
     "@fastify/cors": "^9.0.1",
     "dotenv": "^16.4.5",
     "prisma": "^5.17.0",
-    "@prisma/client": "^5.17.0"
+    "@prisma/client": "^5.17.0",
+    "bluebird": "^3.7.2",
+    "lodash-es": "^4.17.21",
+    "puppeteer": "^22.15.0"
   },
   "devDependencies": {
     "typescript": "^5.5.3",

@@ -1,16 +1,26 @@
 {
   "name": "bypass-tool-pro-monorepo",
   "version": "1.0.0",
+  "description": "Bypass Tool Pro - SEO Ranking Tool with Firebase + Supabase",
   "private": true,
   "scripts": {
     "dev": "concurrently \"pnpm --filter backend dev\" \"pnpm --filter frontend dev\"",
     "build": "pnpm --filter backend build && pnpm --filter frontend build",
+    "db:generate": "pnpm --filter backend db:generate",
+    "db:push": "pnpm --filter backend db:push",
+    "db:migrate": "pnpm --filter backend db:migrate",
+    "db:studio": "pnpm --filter backend db:studio",
     "deploy:frontend": "pnpm --filter frontend build && firebase deploy --only hosting",
     "deploy:backend": "cd packages/backend/firebase-functions && npm install && npm run build && firebase deploy --only functions",
-    "deploy": "pnpm build && pnpm deploy:backend && pnpm deploy:frontend"
+    "deploy": "pnpm build && pnpm deploy:backend && pnpm deploy:frontend",
+    "setup:supabase": "echo 'Setup Supabase database and update DATABASE_URL in config files'",
+    "setup:firebase": "echo 'Setup Firebase project and update firebase.json'"
   },
   "devDependencies": {
     "concurrently": "^8.2.2",
     "typescript": "^5.5.3"
-  }
+  },
+  "keywords": ["seo", "ranking", "firebase", "supabase", "prisma", "fastify", "nextjs"],
+  "author": "",
+  "license": "ISC"
 }

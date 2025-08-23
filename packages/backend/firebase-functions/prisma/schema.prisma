@@ -1,0 +1,142 @@
+// This is your Prisma schema file for Firebase Functions
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Project {
+  id        String   @id @default(cuid())
+  name      String
+  domain    String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  keywords      Keyword[]
+  linkPositions LinkPosition[]
+  tags          Tag[]
+  schemas       Schema[]
+  createdBy     String
+
+  @@map("Project")
+}
+
+model Keyword {
+  id        String   @id @default(cuid())
+  text      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  projectId String
+  status    String   @default("pending") // pending, checked, failed
+  position  Int?     // Thứ hạng trên Google
+  resultLink String? // Link kết quả tìm kiếm
+
+  project     Project       @relation(fields: [projectId], references: [id])
+  keywordRanks KeywordRank[]
+
+  @@unique([text, projectId])
+  @@map("Keyword")
+}
+
+model KeywordRank {
+  id        String   @id @default(cuid())
+  position  Int
+  url       String
+  checkedAt DateTime @default(now())
+  keywordId String
+
+  keyword Keyword @relation(fields: [keywordId], references: [id])
+
+  @@map("KeywordRank")
+}
+
+model LinkPosition {
+  id          String   @id @default(cuid())
+  projectId   String
+  keyword     String
+  domain      String
+  position    Int
+  resultLink  String
+  contentArea String?  // XPath content area
+  status      String    @default("pending") // pending, checked, failed
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  project Project @relation(fields: [projectId], references: [id])
+
+  @@map("LinkPosition")
+}
+
+model XmlImport {
+  id          String   @id @default(cuid())
+  url         String
+  xpath       String
+  result      String
+  status      String   // success, failed
+  errorMessage String?
+  createdBy   String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("XmlImport")
+}
+
+model Schema {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  formFields  Json     // Array of form field definitions
+  isPublic    Boolean  @default(false)
+  createdBy   String
+  projectId   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  project Project? @relation(fields: [projectId], references: [id])
+
+  @@map("Schema")
+}
+
+model Tag {
+  id          String   @id @default(cuid())
+  name        String
+  domain      String
+  description String?
+  status      String   @default("active") // active, inactive
+  createdBy   String
+  projectId   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  project Project? @relation(fields: [projectId], references: [id])
+
+  @@map("Tag")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  role      String   // admin, user, moderator
+  status    String   @default("active") // active, inactive
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("User")
+}
+
+model Role {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  permissions Json     // Array of permission strings
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("Role")
+}
