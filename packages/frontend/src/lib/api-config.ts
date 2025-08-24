@@ -2,7 +2,7 @@
 export const API_CONFIG = {
   // Development
   BASE_URL: process.env.NODE_ENV === 'production' 
-    ? 'https://your-production-domain.com' 
+    ? 'https://backend-6qwu8zyfa-maitrungtruc2002-gmailcoms-projects.vercel.app' 
     : 'http://localhost:3001',
   
   // API Endpoints

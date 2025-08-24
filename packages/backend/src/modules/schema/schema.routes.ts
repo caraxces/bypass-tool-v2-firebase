@@ -24,4 +24,4 @@ async function schemaRoutes(server: FastifyInstance) {
   server.delete('/:id', deleteSchemaHandler);
 }
 
-module.exports = schemaRoutes;
+export default schemaRoutes;

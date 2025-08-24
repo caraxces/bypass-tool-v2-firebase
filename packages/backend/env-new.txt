@@ -1,0 +1,20 @@
+# Database Configuration - Use Supabase PostgreSQL
+DATABASE_URL="postgresql://postgres:2a3a4fea40a5d1b6bcf7cdbd24cc57c55948c5ad@db.tfdheobalbfnrluuuhth.supabase.co:5432/postgres"
+
+# Server Configuration
+PORT=3001
+NODE_ENV=development
+
+# CORS Configuration
+CORS_ORIGIN=http://localhost:3000
+
+# Puppeteer Configuration
+PUPPETEER_HEADLESS=true
+PUPPETEER_TIMEOUT=30000
+
+# Firebase Configuration
+FIREBASE_PROJECT_ID=tienziven-bypass-tool
+
+# Supabase Configuration
+SUPABASE_URL=https://tfdheobalbfnrluuuhth.supabase.co
+SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRmZGhlb2JhbGJmbnJsdXV1aHRoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU5NjYyNjUsImV4cCI6MjA3MTU0MjI2NX0._OfLkhWC_rzV3cPYsBx0s8jClYW_S-tdjaQPLLOid5c

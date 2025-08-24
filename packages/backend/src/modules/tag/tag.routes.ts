@@ -24,4 +24,4 @@ async function tagRoutes(server: FastifyInstance) {
   server.delete('/:id', deleteTagHandler);
 }
 
-module.exports = tagRoutes;
+export default tagRoutes;

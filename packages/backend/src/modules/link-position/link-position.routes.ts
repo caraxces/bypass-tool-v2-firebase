@@ -24,4 +24,4 @@ async function linkPositionRoutes(server: FastifyInstance) {
   server.delete('/:id', deleteLinkPositionHandler);
 }
 
-module.exports = linkPositionRoutes;
+export default linkPositionRoutes;

@@ -24,4 +24,4 @@ async function roleRoutes(server: FastifyInstance) {
   server.delete('/:id', deleteRoleHandler);
 }
 
-module.exports = roleRoutes;
+export default roleRoutes;

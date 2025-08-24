@@ -24,4 +24,4 @@ async function userRoutes(server: FastifyInstance) {
   server.delete('/:id', deleteUserHandler);
 }
 
-module.exports = userRoutes;
+export default userRoutes;

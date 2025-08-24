@@ -24,4 +24,4 @@ async function keywordRoutes(server: FastifyInstance) {
   server.delete('/:id', deleteKeywordHandler);
 }
 
-module.exports = keywordRoutes;
+export default keywordRoutes;

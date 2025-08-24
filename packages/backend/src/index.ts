@@ -5,13 +5,13 @@ import { PrismaClient } from '@prisma/client';
 
 // Import all routes
 import projectRoutes from './modules/project/project.routes';
-const keywordRoutes = require('./modules/keyword/keyword.routes');
-const schemaRoutes = require('./modules/schema/schema.routes');
-const tagRoutes = require('./modules/tag/tag.routes');
-const userRoutes = require('./modules/user/user.routes');
-const roleRoutes = require('./modules/role/role.routes');
+import keywordRoutes from './modules/keyword/keyword.routes';
+import schemaRoutes from './modules/schema/schema.routes';
+import tagRoutes from './modules/tag/tag.routes';
+import userRoutes from './modules/user/user.routes';
+import roleRoutes from './modules/role/role.routes';
 import xmlImportRoutes from './modules/xml-import/xml-import.routes';
-const linkPositionRoutes = require('./modules/link-position/link-position.routes');
+import linkPositionRoutes from './modules/link-position/link-position.routes';
 import keywordAnalysisRoutes from './modules/keyword-analysis/keyword-analysis.routes';
 import hiddenLinkCheckerRoutes from './modules/hidden-link-checker/hidden-link-checker.routes';
 
