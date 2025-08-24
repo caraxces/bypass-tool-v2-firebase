@@ -13,23 +13,28 @@
         "db:migrate": "prisma migrate dev",
         "db:studio": "prisma studio"
     },
-    "keywords": ["seo", "ranking", "fastify", "prisma"],
+    "keywords": [
+        "seo",
+        "ranking",
+        "fastify",
+        "prisma"
+    ],
     "author": "",
     "license": "ISC",
     "dependencies": {
         "@fastify/cors": "^9.0.1",
-        "@prisma/client": "^5.17.0",
+        "@prisma/client": "^5.22.0",
         "bluebird": "^3.7.2",
         "dotenv": "^16.4.5",
         "fastify": "^4.28.1",
+        "firebase-admin": "^12.0.0",
         "lodash-es": "^4.17.21",
-        "puppeteer": "^22.15.0",
-        "firebase-admin": "^12.0.0"
+        "puppeteer": "^22.15.0"
     },
     "devDependencies": {
         "concurrently": "^9.2.0",
         "nodemon": "^3.0.2",
-        "prisma": "^5.17.0",
+        "prisma": "^5.22.0",
         "typescript": "^5.5.3"
     }
 }

@@ -131,7 +131,7 @@ class KeywordAnalysisService {
       // So sánh từng cặp từ khóa
       for (let i = 0; i < keywords.length; i++) {
         for (let j = i + 1; j < keywords.length; j++) {
-          const comparison = await this.compareKeywords(keywords[i], keywords[j]);
+          const comparison = await this.compareKeywords(keywords[i] || '', keywords[j] || '');
           results.push(comparison);
         }
       }

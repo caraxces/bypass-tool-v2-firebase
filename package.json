@@ -13,6 +13,9 @@
     "deploy:frontend": "pnpm --filter frontend build && firebase deploy --only hosting",
     "deploy:backend": "cd packages/backend/firebase-functions && npm install && npm run build && firebase deploy --only functions",
     "deploy": "pnpm build && pnpm deploy:backend && pnpm deploy:frontend",
+    "deploy:firebase": "powershell -ExecutionPolicy Bypass -File deploy-now.ps1",
+    "deploy:production": "powershell -ExecutionPolicy Bypass -File deploy-production.ps1",
+    "setup:complete": "powershell -ExecutionPolicy Bypass -File setup-complete-system.ps1",
     "setup:supabase": "echo 'Setup Supabase database and update DATABASE_URL in config files'",
     "setup:firebase": "echo 'Setup Firebase project and update firebase.json'"
   },
@@ -20,7 +23,18 @@
     "concurrently": "^8.2.2",
     "typescript": "^5.5.3"
   },
-  "keywords": ["seo", "ranking", "firebase", "supabase", "prisma", "fastify", "nextjs"],
+  "keywords": [
+    "seo",
+    "ranking",
+    "firebase",
+    "supabase",
+    "prisma",
+    "fastify",
+    "nextjs"
+  ],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.11.0"
+  }
 }

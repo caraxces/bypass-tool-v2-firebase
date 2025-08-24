@@ -43,10 +43,28 @@ pnpm dev
 - **Keyword**: Từ khóa cần theo dõi
 - **KeywordRank**: Lịch sử thứ hạng
 
+## 🌐 **Production URLs:**
+- **Frontend**: https://tienziven-bypass-tool.web.app
+- **Backend**: https://backend-qy5lppyjv-maitrungtruc2002-gmailcoms-projects.vercel.app
+- **Database**: Supabase (tienziven-bypass-tool)
+
+## 🚀 **Quick Start:**
+```bash
+# Setup hoàn chỉnh
+pnpm setup:complete
+
+# Deploy production
+pnpm deploy:production
+
+# Chạy local
+pnpm dev
+```
+
 ## 🚀 Deploy
 
 ```bash
 pnpm deploy          # Deploy tất cả
 pnpm deploy:backend  # Deploy backend
 pnpm deploy:frontend # Deploy frontend
+pnpm deploy:production # Deploy production hoàn chỉnh
 ```

@@ -104,7 +104,7 @@ class HiddenLinkCheckerService {
         position: domainResult.index,
         url: domainResult.url,
         isHidden,
-        hiddenMethod: isHidden ? await this.detectHiddenMethod(page, domainResult.index) : undefined,
+        hiddenMethod: isHidden ? await this.detectHiddenMethod(page, domainResult.index) : '',
         contentArea: contentXPath
       };
 
@@ -215,9 +215,9 @@ class HiddenLinkCheckerService {
         for (let i = 0; i < result.snapshotLength; i++) {
           const element = result.snapshotItem(i);
           if (element) {
-            const linkElements = element.querySelectorAll('a');
+            const linkElements = (element as Element).querySelectorAll('a');
             
-            linkElements.forEach(link => {
+            linkElements.forEach((link: Element) => {
               const computedStyle = window.getComputedStyle(link);
               let isHidden = false;
               let hiddenMethod = '';
@@ -234,7 +234,7 @@ class HiddenLinkCheckerService {
               }
 
               links.push({
-                href: link.href,
+                href: (link as HTMLAnchorElement).href,
                 isHidden,
                 hiddenMethod
               });

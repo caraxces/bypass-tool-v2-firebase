@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 import { PrismaClient } from '@prisma/client';
 
 // Import all routes
-const projectRoutes = require('./modules/project/project.routes');
+import projectRoutes from './modules/project/project.routes';
 const keywordRoutes = require('./modules/keyword/keyword.routes');
 const schemaRoutes = require('./modules/schema/schema.routes');
 const tagRoutes = require('./modules/tag/tag.routes');
@@ -26,7 +26,7 @@ const server = Fastify({
 
 // Register CORS plugin
 server.register(cors, {
-  origin: process.env.CORS_ORIGIN || '*', // Use environment variable
+  origin: process.env['CORS_ORIGIN'] || '*', // Use environment variable
 });
 
 // Add Prisma to server context
@@ -55,12 +55,13 @@ server.get('/health', async (request, reply) => {
       database: 'connected'
     };
   } catch (error) {
-    server.log.error('Database connection failed:', error);
+    server.log.error('Database connection failed:', error as any);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     return reply.status(500).send({ 
       status: 'error', 
       timestamp: new Date().toISOString(),
       database: 'disconnected',
-      error: error.message
+      error: errorMessage
     });
   }
 });
@@ -110,7 +111,7 @@ const start = async () => {
     server.log.info(`📚 API Documentation available at http://localhost:${process.env['PORT'] || '3001'}`);
     server.log.info(`🗄️  Database: PostgreSQL with Prisma`);
   } catch (err) {
-    server.log.error('Failed to start server:', err);
+    server.log.error('Failed to start server:', err as any);
     await prisma.$disconnect();
     process.exit(1);
   }
